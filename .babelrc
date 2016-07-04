@@ -1,0 +1,7 @@
+{
+  "presets": ["es2015-webpack", "stage-2"],
+  "env": {
+    "test": {
+    }
+  }
+}
