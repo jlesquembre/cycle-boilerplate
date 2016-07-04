@@ -29,64 +29,64 @@ module.exports = env => {
     module: {
       loaders: [
         {
-            test: /\.js$/,
-            loader: 'babel',
-            exclude: /node_modules/
+          test: /\.js$/,
+          loader: 'babel',
+          exclude: /node_modules/
         },
         {
           test: /\.css$/,
           //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
           loaders: ['style',
-                    'css?' +
-                      //'minimize&' +
-                      'modules&' +
-                      'sourceMap&' +
-                      'importLoaders=1&' +
-                      'localIdentName=[name]__[local]___[hash:base64:5]',
-                    //{ loader: 'css',
-                    //    query: { minimize: 1,
-                    //             modules: 1,
-                    //             sourceMap: 1,
-                    //             importLoaders: 1,
-                    //             localIdentName: '[name]__[local]___[hash:base64:5]',
-                    //    }
-                    //},
-                    //{ 'css': { minimize: 1,
-                    //           modules: 1,
-                    //           sourceMap: 1,
-                    //           importLoaders: 1,
-                    //           localIdentName: '[name]__[local]___[hash:base64:5]',
-                    //    }
-                    //},
-                    'postcss'
-                   ],
+            'css?' +
+              //'minimize&' +
+              'modules&' +
+              'sourceMap&' +
+              'importLoaders=1&' +
+              'localIdentName=[name]__[local]___[hash:base64:5]',
+            //{ loader: 'css',
+            //    query: { minimize: 1,
+            //             modules: 1,
+            //             sourceMap: 1,
+            //             importLoaders: 1,
+            //             localIdentName: '[name]__[local]___[hash:base64:5]',
+            //    }
+            //},
+            //{ 'css': { minimize: 1,
+            //           modules: 1,
+            //           sourceMap: 1,
+            //           importLoaders: 1,
+            //           localIdentName: '[name]__[local]___[hash:base64:5]',
+            //    }
+            //},
+            'postcss'
+          ],
         },
       ],
     },
     plugins: removeEmpty([
-        ifProd(new webpack.optimize.DedupePlugin()),
-        ifProd(new webpack.LoaderOptionsPlugin({
-            minimize: true,
-            debug: false,
-            quiet: true,
-        })),
-        ifProd(new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"',
-            },
-        })),
-        ifProd(new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                screw_ie8: true, // eslint-disable-line
-                warnings: false,
-            },
-        })),
-        new HtmlWebpackPlugin({
-            template: './index.html',
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-        }),
+      ifProd(new webpack.optimize.DedupePlugin()),
+      ifProd(new webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false,
+        quiet: true,
+      })),
+      ifProd(new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"',
+        },
+      })),
+      ifProd(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          screw_ie8: true, // eslint-disable-line
+          warnings: false,
+        },
+      })),
+      new HtmlWebpackPlugin({
+        template: './index.html',
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+      }),
     ]),
 
   })
