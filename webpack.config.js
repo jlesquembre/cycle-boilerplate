@@ -14,14 +14,18 @@ module.exports = env => {
   const ifProd = plugin => addPlugin(env.prod, plugin);
   const removeEmpty = array => array.filter(i => !!i);
 
+  // multiple extract instances
+  let extractCssModules = new ExtractTextPlugin('style.[contenthash].css', { allChunks: true });
+  let extractCssVendor = new ExtractTextPlugin('vendor.[contenthash].css');
+
   return validate({
     entry: {
       app: './app.js',
-      vendor: ['@cycle/dom', '@cycle/rxjs-run', '@reactivex/rxjs', 'xstream'],
-      css_vendor: ['normalize.css/normalize.css'],
+      vendor: ['@cycle/dom', '@cycle/rxjs-run', '@reactivex/rxjs', 'xstream', 'normalize.css/normalize.css'],
+      //css_vendor: ['normalize.css/normalize.css'],
     },
     output: {
-      filename: 'bundle.[name].[chunkhash].js',
+      filename: '[name].[chunkhash].js',
       path: resolve(__dirname, 'dist'),
       pathinfo: !env.prod,
     },
@@ -38,13 +42,13 @@ module.exports = env => {
         {
           test: /\.css$/,
           //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-          loader: ExtractTextPlugin.extract('style', 'css'),
+          loader: extractCssVendor.extract('style', 'css'),
           include: /node_modules/
         },
         {
           test: /\.css$/,
           //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-          loader: ExtractTextPlugin.extract('style',
+          loader: extractCssModules.extract('style',
             'css?' +
               'minimize&' +
               'modules&' +
@@ -98,7 +102,9 @@ module.exports = env => {
       ],
     },
     plugins: removeEmpty([
-      new ExtractTextPlugin("[name].[contenthash].css", { allChunks: true }),
+      //new ExtractTextPlugin("[name].[contenthash].css", { allChunks: true }),
+      extractCssModules,
+      extractCssVendor,
       ifProd(new webpack.optimize.DedupePlugin()),
       ifProd(new webpack.LoaderOptionsPlugin({
         minimize: true,
@@ -121,6 +127,7 @@ module.exports = env => {
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
+        //minChunks: Infinity,
       }),
       //new webpack.optimize.CommonsChunkPlugin({
       //  name: 'css_vendor',
