@@ -4,9 +4,6 @@ const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const isProd = process.env.NODE_ENV === 'production';
-const isTest = process.env.NODE_ENV === 'test';
-
 
 module.exports = env => {
 
@@ -15,14 +12,13 @@ module.exports = env => {
   const removeEmpty = array => array.filter(i => !!i);
 
   // multiple extract instances
-  let extractCssModules = new ExtractTextPlugin('style.[contenthash].css', { allChunks: true });
-  let extractCssVendor = new ExtractTextPlugin('vendor.[contenthash].css');
+  let extractCssCustom = new ExtractTextPlugin('style.[contenthash].css', { allChunks: true, disable: !env.prod });
+  let extractCssVendor = new ExtractTextPlugin('vendor.[contenthash].css', { disable: !env.prod });
 
   return validate({
     entry: {
       app: './app.js',
-      vendor: ['@cycle/dom', '@cycle/rxjs-run', '@reactivex/rxjs', 'xstream', 'normalize.css/normalize.css'],
-      //css_vendor: ['normalize.css/normalize.css'],
+      vendor: ['rxjs', 'xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
     },
     output: {
       filename: '[name].[chunkhash].js',
@@ -41,18 +37,18 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
           loader: extractCssVendor.extract('style', 'css'),
           include: /node_modules/
         },
         {
           test: /\.css$/,
           //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-          loader: extractCssModules.extract('style',
+          loader: extractCssCustom.extract('style',
             'css?' +
-              'minimize&' +
+              (env.prod ? 'minimize&' : '' ) + ////////////  Add autoprefixer, Done by postcss :)
               'modules&' +
-              'sourceMap&' +
+              //(env.prod ? '': 'sourceMap&') + //////////
+              'sourceMap&' + //////////
               'importLoaders=1&' +
               'localIdentName=[name]__[local]___[hash:base64:5]',
             'postcss'
@@ -102,8 +98,7 @@ module.exports = env => {
       ],
     },
     plugins: removeEmpty([
-      //new ExtractTextPlugin("[name].[contenthash].css", { allChunks: true }),
-      extractCssModules,
+      extractCssCustom,
       extractCssVendor,
       ifProd(new webpack.optimize.DedupePlugin()),
       ifProd(new webpack.LoaderOptionsPlugin({
@@ -121,6 +116,7 @@ module.exports = env => {
           screw_ie8: true, // eslint-disable-line
           warnings: false,
         },
+        sourceMap: true,
       })),
       new HtmlWebpackPlugin({
         template: './index.html',
@@ -133,6 +129,10 @@ module.exports = env => {
       //  name: 'css_vendor',
       //}),
     ]),
+    devServer: {
+      stats: 'normal', // options: none, errors-only, minimal, normal, verbose, or otherwise you can specify your own object, see
+                       // https://github.com/webpack/webpack/blob/v2.1.0-beta.15/lib/Stats.js#L720-L756
+    },
 
   })
 }
