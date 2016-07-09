@@ -27,7 +27,15 @@ module.exports = env => {
     },
     context: resolve(__dirname, 'src'),
     devtool: env.prod ? 'source-map' : 'eval-source-map',
-    bail: env.prod,
+    //bail: env.prod,
+    bail: true,
+    postcss: function (webpack) {
+      return [
+        require("postcss-cssnext")(),
+        require("postcss-browser-reporter")(),
+        require("postcss-reporter")()
+      ]
+    },
     module: {
       loaders: [
         {
@@ -42,58 +50,17 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          //loader: 'style-loader!css-loader?minimize&modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
           loader: extractCssCustom.extract('style',
             'css?' +
-              (env.prod ? 'minimize&' : '' ) + ////////////  Add autoprefixer, Done by postcss :)
+              // Minification added with the LoaderOptionsPlugin
+              //(env.prod ? 'minimize&' : '' ) +
               'modules&' +
-              //(env.prod ? '': 'sourceMap&') + //////////
-              'sourceMap&' + //////////
+              'sourceMap&' +
               'importLoaders=1&' +
-              'localIdentName=[name]__[local]___[hash:base64:5]',
+              (env.prod ? '' : 'localIdentName=[name]__[local]___[hash:base64:5]'),
             'postcss'
           ),
           exclude: /node_modules/
-          //loader: ExtractTextPlugin.extract([
-          //  'style',
-          //  {
-          //    loader: "css",
-          //    query: {
-          //      //minimize: false,
-          //      camelCase: true,
-          //      modules: true,
-          //      sourceMap: true,
-          //      importLoaders: 1,
-          //      //localIdentName: "[path][name]--[local]",
-          //      localIdentName: '[name]__[local]___[hash:base64:5]',
-          //    },
-          //  },
-          //  'postcss'
-          //]),
-          //loaders: ['style',
-          //  'css?' +
-          //    //'minimize&' +
-          //    'modules&' +
-          //    'sourceMap&' +
-          //    'importLoaders=1&' +
-          //    'localIdentName=[name]__[local]___[hash:base64:5]',
-          //  //{ loader: 'css',
-          //  //    query: { minimize: 1,
-          //  //             modules: 1,
-          //  //             sourceMap: 1,
-          //  //             importLoaders: 1,
-          //  //             localIdentName: '[name]__[local]___[hash:base64:5]',
-          //  //    }
-          //  //},
-          //  //{ 'css': { minimize: 1,
-          //  //           modules: 1,
-          //  //           sourceMap: 1,
-          //  //           importLoaders: 1,
-          //  //           localIdentName: '[name]__[local]___[hash:base64:5]',
-          //  //    }
-          //  //},
-          //  'postcss'
-          //],
         },
       ],
     },
@@ -125,14 +92,10 @@ module.exports = env => {
         name: 'vendor',
         //minChunks: Infinity,
       }),
-      //new webpack.optimize.CommonsChunkPlugin({
-      //  name: 'css_vendor',
-      //}),
     ]),
     devServer: {
       stats: 'normal', // options: none, errors-only, minimal, normal, verbose, or otherwise you can specify your own object, see
                        // https://github.com/webpack/webpack/blob/v2.1.0-beta.15/lib/Stats.js#L720-L756
     },
-
   })
 }
