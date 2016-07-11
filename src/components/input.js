@@ -20,7 +20,7 @@ function model(newValue$, props$){
 
 }
 
-function view(state$, isFocus$, /*id,*/ props$){
+function view(state$, isFocus$, props$){
 
     const vtree$ = Observable.combineLatest(state$, isFocus$, props$,
 
