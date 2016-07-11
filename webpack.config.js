@@ -27,8 +27,8 @@ module.exports = env => {
     },
     context: resolve(__dirname, 'src'),
     devtool: env.prod ? 'source-map' : 'eval-source-map',
-    //bail: env.prod,
-    bail: true,
+    bail: env.prod,
+    //bail: true,
     postcss: function (webpack) {
       return [
         require("postcss-cssnext")(),
