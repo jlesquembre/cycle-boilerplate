@@ -1,4 +1,4 @@
-import {div, label, input, p, form, span, h2} from '@cycle/dom';
+import {div, label, input, span} from '@cycle/dom';
 import {Observable} from 'rxjs';
 import isolate from '@cycle/isolate';
 

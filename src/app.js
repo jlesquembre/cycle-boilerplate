@@ -1,6 +1,6 @@
 import Rx from 'rxjs';
 import {run} from '@cycle/rxjs-run';
-import {makeDOMDriver, div, input, p, span, label, h2, h3, form} from '@cycle/dom';
+import {makeDOMDriver, div, h2, h3, form} from '@cycle/dom';
 
 import Input from './components/input';
 import styles from './app.css';
