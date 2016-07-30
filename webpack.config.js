@@ -12,8 +12,8 @@ module.exports = env => {
   const removeEmpty = array => array.filter(i => !!i);
 
   // multiple extract instances
-  let extractCssCustom = new ExtractTextPlugin('style.[contenthash].css', { allChunks: true, disable: !env.prod });
-  let extractCssVendor = new ExtractTextPlugin('vendor.[contenthash].css', { disable: !env.prod });
+  let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: !env.prod });
+  let extractCssVendor = new ExtractTextPlugin({filename: 'vendor.[contenthash].css', disable: !env.prod });
 
   return validate({
     entry: {
@@ -45,21 +45,25 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          loader: extractCssVendor.extract('style', 'css'),
+          loader: extractCssVendor.extract({
+            fallbackLoader: 'style', // loader(s) to use when css not extracted
+            loader: 'css'
+          }),
           include: /node_modules/
         },
         {
           test: /\.css$/,
-          loader: extractCssCustom.extract('style',
-            'css?' +
+          loader: extractCssCustom.extract({
+            fallbackLoader: 'style',
+            loader: ['css?' +
               // Minification added with the LoaderOptionsPlugin
               //(env.prod ? 'minimize&' : '' ) +
               'modules&' +
               'sourceMap&' +
               'importLoaders=1&' +
               (env.prod ? '' : 'localIdentName=[name]__[local]___[hash:base64:5]'),
-            'postcss'
-          ),
+            'postcss']
+          }),
           exclude: /node_modules/
         },
       ],
