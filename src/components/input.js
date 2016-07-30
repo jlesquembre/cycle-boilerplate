@@ -17,6 +17,7 @@ function intent(DOM){
 function model(newValue$, props$){
   return props$.map(props => typeof props.initialValue === 'string' ? props.initialValue : '').merge(newValue$);
   //return props$.flatMap(props => newValue$.startWith(props.initialValue ? props.initialValue : ''));
+  //return props$.map(props => newValue$.startWith(props.initialValue ? props.initialValue : '')).mergeAll();
 
 }
 
