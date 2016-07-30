@@ -3,13 +3,12 @@ const {resolve} = require('path');
 const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const {getIfUtils, removeEmpty} = require('webpack-config-utils')
 
 
 module.exports = env => {
 
-  const addPlugin = (add, plugin) => add ? plugin : undefined;
-  const ifProd = plugin => addPlugin(env.prod, plugin);
-  const removeEmpty = array => array.filter(i => !!i);
+  const {ifProd} = getIfUtils(env);
 
   // multiple extract instances
   let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: !env.prod });
