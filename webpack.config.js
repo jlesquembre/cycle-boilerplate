@@ -20,7 +20,7 @@ module.exports = env => {
       vendor: ['rxjs', 'xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
     },
     output: {
-      filename: '[name].[chunkhash].js',
+      filename: env.prod ? '[name].[chunkhash].js' : '[name].js',
       path: resolve(__dirname, 'dist'),
       pathinfo: !env.prod,
     },
