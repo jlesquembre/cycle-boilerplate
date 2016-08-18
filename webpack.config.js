@@ -5,10 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils')
 
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = env => {
 
-  const {ifProd} = getIfUtils(env);
+  // ifUtils returns true/false when given no arguments
+  const {ifProd, ifDev} = getIfUtils(env);
 
   // multiple extract instances
   let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: !env.prod });
@@ -95,8 +97,10 @@ module.exports = env => {
         name: 'vendor',
         //minChunks: Infinity,
       }),
+      ifDev(new DashboardPlugin()),
     ]),
     devServer: {
+      quiet: ifDev(),  // required by DashboardPlugin
       stats: 'normal', // options: none, errors-only, minimal, normal, verbose, or otherwise you can specify your own object, see
                        // https://github.com/webpack/webpack/blob/v2.1.0-beta.15/lib/Stats.js#L720-L756
     },
