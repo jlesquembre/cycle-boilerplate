@@ -10,11 +10,11 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 module.exports = env => {
 
   // ifUtils returns true/false when given no arguments
-  const {ifProd, ifDev} = getIfUtils(env);
+  const {ifProd, ifNotProd, ifDev} = getIfUtils(env);
 
   // multiple extract instances
-  let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: !env.prod });
-  let extractCssVendor = new ExtractTextPlugin({filename: 'vendor.[contenthash].css', disable: !env.prod });
+  let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: ifNotProd() });
+  let extractCssVendor = new ExtractTextPlugin({filename: 'vendor.[contenthash].css', disable: ifNotProd() });
 
   return validate({
     entry: {
@@ -22,13 +22,13 @@ module.exports = env => {
       vendor: ['rxjs', 'xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
     },
     output: {
-      filename: env.prod ? '[name].[chunkhash].js' : '[name].js',
+      filename: ifProd() ? '[name].[chunkhash].js' : '[name].js',
       path: resolve(__dirname, 'dist'),
-      pathinfo: !env.prod,
+      pathinfo: ifNotProd(),
     },
     context: resolve(__dirname, 'src'),
-    devtool: env.prod ? 'source-map' : 'eval-source-map',
-    bail: env.prod,
+    devtool: ifProd() ? 'source-map' : 'eval-source-map',
+    bail: ifProd(),
     //bail: true,
     postcss: function (webpack) {
       return [
@@ -58,11 +58,11 @@ module.exports = env => {
             fallbackLoader: 'style',
             loader: ['css?' +
               // Minification added with the LoaderOptionsPlugin
-              //(env.prod ? 'minimize&' : '' ) +
+              //(ifProd() ? 'minimize&' : '' ) +
               'modules&' +
               'sourceMap&' +
               'importLoaders=1&' +
-              (env.prod ? '' : 'localIdentName=[name]__[local]___[hash:base64:5]'),
+              (ifProd() ? '' : 'localIdentName=[name]__[local]___[hash:base64:5]'),
             'postcss']
           }),
           exclude: /node_modules/
