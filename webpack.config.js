@@ -27,7 +27,7 @@ module.exports = env => {
       pathinfo: ifNotProd(),
     },
     context: resolve(__dirname, 'src'),
-    devtool: ifProd() ? 'source-map' : 'eval-source-map',
+    devtool: ifProd() ? 'eval-source-map' : 'source-map' ,
     bail: ifProd(),
     //bail: true,
     postcss: function (webpack) {
