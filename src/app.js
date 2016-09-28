@@ -1,4 +1,4 @@
-import Rx from 'rxjs';
+import {Observable} from 'rxjs';
 import {run} from '@cycle/rxjs-run';
 import {makeDOMDriver, div, h2, h3, form} from '@cycle/dom';
 
@@ -7,10 +7,10 @@ import styles from './app.css';
 
 function main(sources) {
 
-  const nameInput = Input({DOM: sources.DOM, props$: Rx.Observable.of({labelName: 'Your name'})});
+  const nameInput = Input({DOM: sources.DOM, props$: Observable.of({labelName: 'Your name'})});
 
   const sinks = {
-    DOM: Rx.Observable.
+    DOM: Observable.
       combineLatest(nameInput.DOM, nameInput.value$,
                     (nameInputDom, name) => {
                       return div({props: { className: styles.container }}, [

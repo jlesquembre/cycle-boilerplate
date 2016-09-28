@@ -18,7 +18,7 @@ module.exports = env => {
   return {
     entry: {
       app: './app.js',
-      vendor: ['rxjs', 'xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
+      vendor: ['xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
     },
     output: {
       filename: ifProd() ? '[name].[chunkhash].js' : '[name].js',
