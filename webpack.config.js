@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const {resolve} = require('path');
-const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils')
@@ -16,7 +15,7 @@ module.exports = env => {
   let extractCssCustom = new ExtractTextPlugin({filename: 'style.[contenthash].css', allChunks: true, disable: ifNotProd() });
   let extractCssVendor = new ExtractTextPlugin({filename: 'vendor.[contenthash].css', disable: ifNotProd() });
 
-  return validate({
+  return {
     entry: {
       app: './app.js',
       vendor: ['rxjs', 'xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
@@ -27,16 +26,13 @@ module.exports = env => {
       pathinfo: ifNotProd(),
     },
     context: resolve(__dirname, 'src'),
-    devtool: ifProd() ? 'eval-source-map' : 'source-map' ,
+    devtool: ifProd() ? 'source-map' : 'eval-source-map' ,
     bail: ifProd(),
-    //bail: true,
-    postcss: function (webpack) {
-      return [
-        require("postcss-cssnext")(),
-        require("postcss-browser-reporter")(),
-        require("postcss-reporter")()
-      ]
-    },
+    //resolve: {
+    //  alias: {
+    //    rxjs: 'rxjs-es',
+    //  },
+    //},
     module: {
       loaders: [
         {
@@ -73,11 +69,19 @@ module.exports = env => {
       extractCssCustom,
       extractCssVendor,
       ifProd(new webpack.optimize.DedupePlugin()),
-      ifProd(new webpack.LoaderOptionsPlugin({
-        minimize: true,
-        debug: false,
-        quiet: true,
-      })),
+      new webpack.LoaderOptionsPlugin({
+        options: {
+          context: __dirname,
+          minimize: ifProd(),
+          debug: ifNotProd(),
+          quiet: ifProd(),
+          postcss: [
+            require("postcss-cssnext")(),
+            require("postcss-browser-reporter")(),
+            require("postcss-reporter")()
+          ]
+        },
+      }),
       ifProd(new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: '"production"',
@@ -104,5 +108,5 @@ module.exports = env => {
       stats: 'normal', // options: none, errors-only, minimal, normal, verbose, or otherwise you can specify your own object, see
                        // https://github.com/webpack/webpack/blob/v2.1.0-beta.15/lib/Stats.js#L720-L756
     },
-  })
+  }
 }
