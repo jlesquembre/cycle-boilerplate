@@ -6,7 +6,7 @@ import styles from './input.css';
 
 function intent(DOM){
     const newValue$ = DOM.select('.input').events('input').map(ev => ev.target.value);
-    const focus$ = DOM.select('.input').events('focus').map(e => {return 'focus'});
+    const focus$ = DOM.select('.input').events('focus').map(e => 'focus');
     const blur$ = DOM.select('.input').events('blur').map(e => 'blur');
 
     const isFocus$ = focus$.merge(blur$).startWith('blur').map(val => val == 'focus');
