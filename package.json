@@ -63,6 +63,7 @@
     "@cycle/isolate": "1.4.0",
     "@cycle/rxjs-adapter": "3.0.3",
     "@cycle/rxjs-run": "3.0.3",
+    "glamor": "^2.17.14",
     "normalize.css": "4.2.0",
     "rxjs": "5.0.0-beta.12",
     "xstream": "6.4.0"

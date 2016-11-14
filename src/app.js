@@ -3,7 +3,17 @@ import {run} from '@cycle/rxjs-run';
 import {makeDOMDriver, div, h2, h3, form} from '@cycle/dom';
 
 import Input from './components/input';
-import styles from './app.css';
+import { style, merge } from 'glamor';
+
+let container = style({
+  fontFamily: 'Roboto',
+  background: '#FFF',
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  height: '100vh',
+})
 
 function main(sources) {
 
@@ -13,7 +23,7 @@ function main(sources) {
     DOM: Observable.
       combineLatest(nameInput.DOM, nameInput.value$,
                     (nameInputDom, name) => {
-                      return div({props: { className: styles.container }}, [
+                      return div(`.${container}`, [
                         h2('Welcome to Cycle.js'),
                         form([nameInputDom,]),
                         h3(`Hello ${name}!!`)

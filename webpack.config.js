@@ -18,7 +18,8 @@ module.exports = env => {
   return {
     entry: {
       app: './app.js',
-      vendor: ['xstream', '@cycle/dom', '@cycle/rxjs-run', 'normalize.css/normalize.css'],
+      vendor: ['xstream', '@cycle/dom', '@cycle/rxjs-run',
+               'glamor', 'normalize.css/normalize.css'],
     },
     output: {
       filename: ifProd() ? '[name].[chunkhash].js' : '[name].js',
@@ -44,7 +45,7 @@ module.exports = env => {
           test: /\.css$/,
           loader: extractCssVendor.extract({
             fallbackLoader: 'style', // loader(s) to use when css not extracted
-            loader: 'css'
+            loader: 'css?minimize'
           }),
           include: /node_modules/
         },
