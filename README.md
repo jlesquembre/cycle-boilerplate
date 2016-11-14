@@ -4,7 +4,7 @@
 
 - [Webpack 2](http://webpack.github.io/docs/)
 	- Tree shaking
-	- [webpack validator](https://github.com/js-dxtools/webpack-validator)
+	- [~~webpack validator~~](https://github.com/js-dxtools/webpack-validator) No longer needed: [link](https://github.com/webpack/webpack/pull/2974)
 	- Production and development builds with only one config file (thanks to [webpack config utils](https://github.com/kentcdodds/webpack-config-utils))
 	- [webpack dahsboard](https://github.com/FormidableLabs/webpack-dashboard)
   - Generate css files in production with (thanks to [extract text plugin](https://github.com/webpack/extract-text-webpack-plugin))
@@ -13,6 +13,7 @@
 - [Babel](http://babeljs.io/) with [state 2 presets](http://babeljs.io/docs/plugins/preset-stage-2/)
 
 - CSS
+  - [glamor (css-in-js)](https://github.com/threepointone/glamor)
   - [normalize.css](https://necolas.github.io/normalize.css/)
   - [CSS modules](https://github.com/css-modules/css-modules)
   - [postcss](https://github.com/postcss/postcss)
