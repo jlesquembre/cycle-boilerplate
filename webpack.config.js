@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {getIfUtils, removeEmpty} = require('webpack-config-utils')
 
 const DashboardPlugin = require('webpack-dashboard/plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = env => {
 
@@ -18,7 +19,7 @@ module.exports = env => {
   return {
     entry: {
       app: './app.js',
-      vendor: ['xstream', '@cycle/dom', '@cycle/rxjs-run',
+      vendor: ['xstream', '@cycle/dom', '@cycle/rxjs-run', '@cycle/isolate',
                'glamor', 'normalize.css/normalize.css'],
     },
     output: {
@@ -103,6 +104,7 @@ module.exports = env => {
         //minChunks: Infinity,
       }),
       ifDev(new DashboardPlugin()),
+      ifProd(new BundleAnalyzerPlugin()),
     ]),
     devServer: {
       quiet: ifDev(),  // required by DashboardPlugin
