@@ -28,9 +28,6 @@
     "build": "webpack-dashboard -- webpack --env.dev",
     "build:prod": "webpack --env.prod",
     "lint": "eslint .",
-    "validate": "npm-run-all --parallel validate-webpack:*",
-    "validate-webpack:dev": "webpack-validator webpack.config.js --env.dev",
-    "validate-webpack:prod": "webpack-validator webpack.config.js --env.prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "José Luis Lafuente",
@@ -53,7 +50,7 @@
     "postcss-reporter": "^2.0.0",
     "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.26",
+    "webpack": "^2.1.0-beta.27",
     "webpack-config-utils": "^2.1.0",
     "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "^2.1.0-beta.11"
