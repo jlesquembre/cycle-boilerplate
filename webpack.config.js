@@ -38,29 +38,29 @@ module.exports = env => {
       loaders: [
         {
           test: /\.js$/,
-          loader: 'babel',
+          loader: 'babel-loader',
           exclude: /node_modules/
         },
         {
           test: /\.css$/,
           loader: extractCssVendor.extract({
-            fallbackLoader: 'style', // loader(s) to use when css not extracted
-            loader: 'css?minimize'
+            fallbackLoader: 'style-loader', // loader(s) to use when css not extracted
+            loader: 'css-loader?minimize'
           }),
           include: /node_modules/
         },
         {
           test: /\.css$/,
           loader: extractCssCustom.extract({
-            fallbackLoader: 'style',
-            loader: ['css?' +
+            fallbackLoader: 'style-loader',
+            loader: ['css-loader?' +
               // Minification added with the LoaderOptionsPlugin
               //(ifProd() ? 'minimize&' : '' ) +
               'modules&' +
               'sourceMap&' +
               'importLoaders=1&' +
               (ifProd() ? '' : 'localIdentName=[name]__[local]___[hash:base64:5]'),
-            'postcss']
+            'postcss-loader']
           }),
           exclude: /node_modules/
         },
