@@ -85,61 +85,61 @@ const group = style({
 
 
 function intent(DOM){
-    const newValue$ = DOM.select(`.${input}`).events('input').map(ev => ev.target.value);
-    const focus$ = DOM.select(`.${input}`).events('focus').map(e => 'focus');
-    const blur$ = DOM.select(`.${input}`).events('blur').map(e => 'blur');
+  const newValue$ = DOM.select(`.${input}`).events('input').map(ev => ev.target.value);
+  const focus$ = DOM.select(`.${input}`).events('focus').map(e => 'focus');
+  const blur$ = DOM.select(`.${input}`).events('blur').map(e => 'blur');
 
-    const isFocus$ = focus$.merge(blur$).startWith('blur').map(val => val == 'focus');
+  const isFocus$ = focus$.merge(blur$).startWith('blur').map(val => val == 'focus');
 
-    return {newValue$, isFocus$};
+  return {newValue$, isFocus$};
 }
+
 
 function model(newValue$, props$){
   return props$.map(props => typeof props.initialValue === 'string' ? props.initialValue : '').merge(newValue$);
-
 }
+
 
 function view(state$, isFocus$, props$){
 
-    const vtree$ = Observable.combineLatest(state$, isFocus$, props$,
+  const vtree$ = Observable.combineLatest(state$, isFocus$, props$,
 
-            ( value, focus, props ) =>
+    ( value, focus, props ) =>
 
-            h(`div.${group}`,
-                [
-                    h(`input.${input}`, {
-                      props: {
-                        required: true,
-                        value
-                      }
-                    }),
-                    h(`span.${bar}`),
-                    h('label', {
-                      props: {
-                        className: `${labelCommon} ` +
-                                   `${focus || value ? labelActive : labelInactive}`
-                      }},
-                      props.labelName
-                    ),
-                ])
-            );
+      h(`div.${group}`,
+        [
+          h(`input.${input}`, {
+            props: {
+              required: true,
+              value
+            }
+          }),
+          h(`span.${bar}`),
+          h('label', {
+            props: {
+              className: `${labelCommon} ` +
+              `${focus || value ? labelActive : labelInactive}`
+            }},
+            props.labelName
+          ),
+        ])
+  );
 
-    return vtree$;
+  return vtree$;
 }
 
 
 function Input({DOM, props$}){
 
-    const {newValue$, isFocus$} = intent(DOM);
-    const state$ = model(newValue$, props$);
-    const vtree$ = view(state$, isFocus$, props$);
+  const {newValue$, isFocus$} = intent(DOM);
+  const state$ = model(newValue$, props$);
+  const vtree$ = view(state$, isFocus$, props$);
 
   return {
-      DOM: vtree$,
-      value$: state$,
+    DOM: vtree$,
+    value$: state$,
   }
-
-
 }
+
 
 export default sources => isolate(Input)(sources);
