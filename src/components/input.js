@@ -53,7 +53,7 @@ const barTrans = {
   width:0,
   bottom: 1,
   position: 'absolute',
-  background: '#5264AE',
+  background: onColor,
   transition: '0.2s ease all',
 }
 
