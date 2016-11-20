@@ -2,7 +2,7 @@ import {h} from '@cycle/dom';
 import {Observable} from 'rxjs';
 import isolate from '@cycle/isolate';
 
-import styles from './input.css';
+//import styles from './input.css';
 import { style, merge, $, before, after } from 'glamor';
 
 

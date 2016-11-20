@@ -5,6 +5,8 @@ import {makeDOMDriver, div, h2, h3, form} from '@cycle/dom';
 import Input from './components/input';
 import { style, merge } from 'glamor';
 
+import styles from './global.css';
+
 let container = style({
   fontFamily: 'Roboto',
   background: '#FFF',
