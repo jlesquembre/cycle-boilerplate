@@ -45,7 +45,7 @@ module.exports = env => {
         {
           test: /\.css$/,
           loader: extractCssVendor.extract({
-            fallbackLoader: 'style-loader', // loader(s) to use when css not extracted
+            fallbackLoader: 'style-loader?insertAt=top', // loader(s) to use when css not extracted
             loader: 'css-loader?minimize'
           }),
           include: /node_modules/
@@ -53,10 +53,9 @@ module.exports = env => {
         {
           test: /\.css$/,
           loader: extractCssCustom.extract({
-            fallbackLoader: 'style-loader',
+            fallbackLoader: 'style-loader?insertAt=top', // insert at top to work with glamor
             loader: ['css-loader?' +
-              // Minification added with the LoaderOptionsPlugin
-              //(ifProd() ? 'minimize&' : '' ) +
+              'minimize&' +
               'modules&' +
               'sourceMap&' +
               'importLoaders=1&' +
@@ -70,13 +69,17 @@ module.exports = env => {
     plugins: removeEmpty([
       extractCssCustom,
       extractCssVendor,
+
+      // DedupePlugin was removed, see:
+      // https://github.com/webpack/webpack/pull/3266#issuecomment-260623603
       ifProd(new webpack.optimize.DedupePlugin()),
+
       new webpack.LoaderOptionsPlugin({
         options: {
           context: __dirname,
-          minimize: ifProd(),
-          debug: ifNotProd(),
-          quiet: ifProd(),
+          //minimize: ifProd(),
+          //debug: ifNotProd(),
+          //quiet: ifProd(),
           postcss: [
             require("postcss-cssnext")(),
             require("postcss-browser-reporter")(),
@@ -98,6 +101,7 @@ module.exports = env => {
       })),
       new HtmlWebpackPlugin({
         template: './index.html',
+        minify: {html5: true, collapseWhitespace: true},
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
