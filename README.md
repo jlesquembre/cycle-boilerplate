@@ -6,7 +6,8 @@
 	- Tree shaking
 	- [~~webpack validator~~](https://github.com/js-dxtools/webpack-validator) No longer needed: [link](https://github.com/webpack/webpack/pull/2974)
 	- Production and development builds with only one config file (thanks to [webpack config utils](https://github.com/kentcdodds/webpack-config-utils))
-	- [webpack dahsboard](https://github.com/FormidableLabs/webpack-dashboard)
+	- [Webpack dahsboard](https://github.com/FormidableLabs/webpack-dashboard) for dev build
+  - [Webpack bundle analyzer](https://github.com/th0r/webpack-bundle-analyzer) for prod build
   - Generate css files in production with (thanks to [extract text plugin](https://github.com/webpack/extract-text-webpack-plugin))
   - Minify js file in prodction (thanks to [UglifyJS](https://github.com/mishoo/UglifyJS2))
 
