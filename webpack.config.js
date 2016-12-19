@@ -35,6 +35,10 @@ module.exports = env => {
     //    rxjs: 'rxjs-es',
     //  },
     //},
+    performance: {
+      maxAssetSize: ifProd() ? 250000 : 5 * 1024 * 1024, // int (in bytes),
+      maxEntrypointSize: ifProd() ? 250000 : 5 * 1024 * 1024, // int (in bytes),
+    },
     module: {
       loaders: [
         {
